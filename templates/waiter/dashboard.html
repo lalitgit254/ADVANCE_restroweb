@@ -1,0 +1,17 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('waiter.dashboard') }}" class="active"><i class="fas fa-concierge-bell"></i> Dashboard</a>
+{% endblock %}
+{% block page_title %}Waiter Panel{% endblock %}
+{% block dashboard_content %}
+<h3>Ready Orders</h3>
+{% for order in ready_orders %}
+<div class="order-card">
+#{{ order.order_number }} - Table {{ order.table.table_number if order.table else 'N/A' }}
+<form method="POST" action="{{ url_for('waiter.serve_order', order_id=order.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="btn btn-success btn-sm">Mark Served</button>
+</form>
+</div>
+{% endfor %}
+{% endblock %}

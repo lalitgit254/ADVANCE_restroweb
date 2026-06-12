@@ -1,0 +1,16 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('cashier.dashboard') }}" class="active"><i class="fas fa-cash-register"></i> Dashboard</a>
+{% endblock %}
+{% block page_title %}Cashier Panel{% endblock %}
+{% block dashboard_content %}
+<div class="stat-card"><div class="stat-info"><h3>₹{{ "%.2f"|format(daily_total) }}</h3><p>Today's Collection</p></div></div>
+<h3>Pending Payments</h3>
+{% for p in pending_payments %}
+<div class="list-item">
+<span>Order #{{ p.order.order_number }}</span>
+<span>₹{{ p.amount }}</span>
+<a href="{{ url_for('cashier.generate_bill', order_id=p.order_id) }}" class="btn btn-sm">Download Bill</a>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Track Order{% endblock %}
+{% block content %}
+<div class="container section">
+    <h1>Order #{{ order.order_number }}</h1>
+    <div class="order-tracker" id="orderTracker" data-order-id="{{ order.id }}">
+        <div class="tracker-steps">
+            {% set steps = ['pending','accepted','preparing','ready','served','completed'] %}
+            {% if order.order_type == 'home_delivery' %}
+                {% set steps = ['pending','accepted','preparing','ready','out_for_delivery','delivered','completed'] %}
+            {% endif %}
+            {% for step in steps %}
+            <div class="tracker-step {{ 'active' if order.status == step else '' }} {{ 'completed' if steps.index(step) < steps.index(order.status) if order.status in steps else false }}">
+                <div class="step-icon"><i class="fas fa-circle"></i></div>
+                <span>{{ step|replace('_',' ')|title }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="order-details card">
+            <h3>Order Details</h3>
+            {% for item in order.items %}
+            <div class="list-item">
+                <span>{{ item.food_name }} x {{ item.quantity }}</span>
+                <span>₹{{ "%.2f"|format(item.total_price) }}</span>
+            </div>
+            {% endfor %}
+            <div class="summary-row total"><span>Total</span><span>₹{{ "%.2f"|format(order.total_amount) }}</span></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/order-tracking.js') }}"></script>
+{% endblock %}

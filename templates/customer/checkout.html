@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="container section">
+    <h1>Checkout</h1>
+    <form method="POST" class="checkout-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label>Order Type</label>
+            <select name="order_type" id="orderType" class="form-control" required>
+                <option value="dine_in">Dine-In</option>
+                <option value="takeaway">Takeaway</option>
+                <option value="home_delivery">Home Delivery</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Branch</label>
+            <select name="branch_id" class="form-control" required>
+                {% for branch in branches %}
+                <option value="{{ branch.id }}">{{ branch.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" id="tableGroup">
+            <label>Table Number (optional)</label>
+            <input type="number" name="table_id" class="form-control">
+        </div>
+        <div class="form-group hidden" id="deliveryGroup">
+            <label>Delivery Address</label>
+            <textarea name="delivery_address" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Coupon Code</label>
+            <input type="text" name="coupon_code" class="form-control">
+        </div>
+        {% if loyalty %}
+        <div class="form-group">
+            <label>Use Loyalty Points (Available: {{ loyalty.total_points }})</label>
+            <input type="number" name="loyalty_points" min="0" max="{{ loyalty.total_points }}" value="0" class="form-control">
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <label>Special Instructions</label>
+            <textarea name="special_instructions" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="order-total">
+            <strong>Total: ₹{{ "%.2f"|format(cart.total) }}</strong>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
+    </form>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.getElementById('orderType').addEventListener('change', function() {
+    const isDelivery = this.value === 'home_delivery';
+    document.getElementById('deliveryGroup').classList.toggle('hidden', !isDelivery);
+    document.getElementById('tableGroup').classList.toggle('hidden', isDelivery);
+});
+</script>
+{% endblock %}

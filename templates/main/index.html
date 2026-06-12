@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Home - {{ app_name }}{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="container hero-content">
+        <h1>Welcome to {{ app_name }}</h1>
+        <p>Order food, book tables, and enjoy seamless dining experiences</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Get Started</a>
+            <a href="#restaurants" class="btn btn-outline btn-lg">Explore Restaurants</a>
+        </div>
+    </div>
+</section>
+
+<section class="features section">
+    <div class="container">
+        <h2 class="section-title">Why Choose Us</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-qrcode"></i>
+                <h3>QR Menu Ordering</h3>
+                <p>Scan and order contactlessly from your table</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Table Reservations</h3>
+                <p>Book your table up to 30 days in advance</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-truck"></i>
+                <h3>Live Delivery Tracking</h3>
+                <p>Track your order in real-time</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gift"></i>
+                <h3>Loyalty Rewards</h3>
+                <p>Earn points with every order</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="restaurants">
+    <div class="container">
+        <h2 class="section-title">Our Restaurants</h2>
+        <div class="restaurant-grid">
+            {% for restaurant in restaurants %}
+            <a href="{{ url_for('main.restaurant_profile', slug=restaurant.slug) }}" class="restaurant-card">
+                <div class="restaurant-img" style="background-image: url('{{ restaurant.banner_url or '/static/images/placeholder.jpg' }}')"></div>
+                <div class="restaurant-info">
+                    <h3>{{ restaurant.name }}</h3>
+                    <p>{{ restaurant.city or restaurant.address[:50] }}</p>
+                </div>
+            </a>
+            {% else %}
+            <p class="text-center">No restaurants available yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

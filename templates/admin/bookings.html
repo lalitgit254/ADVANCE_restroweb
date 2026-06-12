@@ -1,0 +1,17 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+{% block dashboard_content %}
+{% for booking in bookings.items %}
+<div class="list-item">
+<span>{{ booking.booking_date }} {{ booking.booking_time }} - {{ booking.guests }} guests - {{ booking.status }}</span>
+{% if booking.status == 'pending' %}
+<form method="POST" action="{{ url_for('admin.booking_action', booking_id=booking.id) }}" style="display:inline">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button name="action" value="approve" class="btn btn-sm btn-success">Approve</button>
+<button name="action" value="reject" class="btn btn-sm btn-danger">Reject</button>
+</form>
+{% endif %}
+</div>
+{% endfor %}
+{% endblock %}

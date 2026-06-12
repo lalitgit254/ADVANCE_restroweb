@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Kitchen Display System{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/kds.css') }}">{% endblock %}
+{% block content %}
+<div class="kds-container" id="kdsBoard">
+    <header class="kds-header">
+        <h1><i class="fas fa-fire"></i> Kitchen Display</h1>
+        <span id="kdsClock"></span>
+    </header>
+    <div class="kds-grid">
+        {% for order in orders %}
+        <div class="kds-order {{ 'priority' if order.priority else '' }}" data-order-id="{{ order.id }}">
+            <div class="kds-order-header">
+                <span class="order-num">#{{ order.order_number }}</span>
+                <span class="order-timer" data-created="{{ order.created_at.isoformat() }}">00:00</span>
+            </div>
+            <div class="kds-items">
+                {% for item in order.items %}
+                <div class="kds-item">{{ item.quantity }}x {{ item.food_name }}</div>
+                {% endfor %}
+            </div>
+            <div class="kds-actions">
+                <form method="POST" action="{{ url_for('chef.update_status', order_id=order.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button name="status" value="ready" class="btn btn-success">Ready</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/kitchen.js') }}"></script>
+{% endblock %}

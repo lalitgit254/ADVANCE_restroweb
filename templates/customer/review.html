@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Leave a Review{% endblock %}
+{% block content %}
+<div class="container section">
+<h1>Rate Your Experience</h1>
+<form method="POST" class="card" style="padding:24px;max-width:500px">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{% for field, label in [('food_rating','Food'),('service_rating','Service'),('ambience_rating','Ambience'),('cleanliness_rating','Cleanliness')] %}
+<div class="form-group"><label>{{ label }}</label><input type="range" name="{{ field }}" min="1" max="5" value="5" class="form-control"></div>
+{% endfor %}
+<div class="form-group"><label>Review</label><textarea name="review_text" class="form-control" rows="4"></textarea></div>
+<button class="btn btn-primary">Submit Review</button>
+</form>
+</div>
+{% endblock %}

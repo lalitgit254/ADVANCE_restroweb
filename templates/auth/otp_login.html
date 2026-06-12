@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}OTP Login{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>OTP Login</h2>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="step" value="{{ step }}">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ email or '' }}" required class="form-control" {{ 'readonly' if step == 'verify' else '' }}>
+            </div>
+            {% if step == 'verify' %}
+            <div class="form-group">
+                <label>OTP Code</label>
+                <input type="text" name="otp" required class="form-control" maxlength="6" placeholder="Enter 6-digit OTP">
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary btn-block">{{ 'Verify OTP' if step == 'verify' else 'Send OTP' }}</button>
+        </form>
+        <p class="auth-links"><a href="{{ url_for('auth.login') }}">Back to Login</a></p>
+    </div>
+</div>
+{% endblock %}

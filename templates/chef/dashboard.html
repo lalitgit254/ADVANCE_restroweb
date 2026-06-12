@@ -1,0 +1,37 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('chef.dashboard') }}" class="active"><i class="fas fa-fire"></i> Orders</a>
+<a href="{{ url_for('chef.kds') }}"><i class="fas fa-tv"></i> Kitchen Display</a>
+{% endblock %}
+{% block page_title %}Chef Panel{% endblock %}
+{% block dashboard_content %}
+<div class="orders-queue">
+    {% for order in orders %}
+    <div class="order-card {{ 'priority' if order.priority else '' }}">
+        <div class="order-card-header">
+            <strong>#{{ order.order_number }}</strong>
+            {% if order.priority %}<span class="badge badge-danger">Priority</span>{% endif %}
+            <span class="badge badge-{{ order.status }}">{{ order.status }}</span>
+        </div>
+        <ul>
+            {% for item in order.items %}
+            <li>{{ item.quantity }}x {{ item.food_name }}</li>
+            {% endfor %}
+        </ul>
+        <form method="POST" action="{{ url_for('chef.update_status', order_id=order.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {% if order.status == 'accepted' %}
+            <button name="status" value="preparing" class="btn btn-warning btn-sm">Start Preparing</button>
+            {% elif order.status == 'preparing' %}
+            <button name="status" value="ready" class="btn btn-success btn-sm">Mark Ready</button>
+            {% endif %}
+        </form>
+    </div>
+    {% else %}
+    <p>No active orders in kitchen.</p>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/kitchen.js') }}"></script>
+{% endblock %}

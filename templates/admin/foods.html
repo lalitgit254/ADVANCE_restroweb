@@ -1,0 +1,12 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Food Management{% endblock %}
+{% block header_actions %}<a href="{{ url_for('admin.add_food') }}" class="btn btn-primary btn-sm">Add Food</a>{% endblock %}
+{% block dashboard_content %}
+<div class="card"><div class="card-body">
+<table class="data-table" style="width:100%;border-collapse:collapse">
+<thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Status</th></tr></thead>
+<tbody>{% for item in items %}<tr><td>{{ item.name }}</td><td>{{ item.category.name }}</td><td>₹{{ item.price }}</td><td>{{ 'Available' if item.is_available else 'Hidden' }}</td></tr>{% endfor %}</tbody>
+</table>
+</div></div>
+{% endblock %}

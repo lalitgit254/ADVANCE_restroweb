@@ -1,0 +1,15 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Orders{% endblock %}
+{% block dashboard_content %}
+{% for order in orders.items %}
+<div class="order-card">
+<strong>#{{ order.order_number }}</strong> - {{ order.status }} - ₹{{ order.total_amount }}
+<form method="POST" action="{{ url_for('admin.update_order_status', order_id=order.id) }}" style="margin-top:8px">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<select name="status" class="form-control"><option value="accepted">Accepted</option><option value="preparing">Preparing</option><option value="ready">Ready</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+<button class="btn btn-sm btn-primary">Update</button>
+</form>
+</div>
+{% endfor %}
+{% endblock %}

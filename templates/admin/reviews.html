@@ -1,0 +1,11 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Reviews{% endblock %}
+{% block dashboard_content %}
+{% for r in reviews %}
+<div class="card" style="margin-bottom:12px;padding:16px">
+<strong>{{ r.overall_rating }}/5</strong> - {{ r.user.full_name if r.user else 'Anonymous' }}
+<p>{{ r.review_text }}</p>
+</div>
+{% endfor %}
+{% endblock %}

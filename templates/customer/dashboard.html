@@ -1,0 +1,70 @@
+{% extends "layouts/dashboard.html" %}
+{% block title %}Customer Dashboard{% endblock %}
+{% block sidebar %}
+<a href="{{ url_for('customer.dashboard') }}" class="active"><i class="fas fa-home"></i> Dashboard</a>
+<a href="{{ url_for('customer.orders') }}"><i class="fas fa-receipt"></i> Orders</a>
+<a href="{{ url_for('customer.bookings') }}"><i class="fas fa-calendar"></i> Bookings</a>
+<a href="{{ url_for('customer.cart') }}"><i class="fas fa-shopping-cart"></i> Cart</a>
+<a href="{{ url_for('customer.profile') }}"><i class="fas fa-user"></i> Profile</a>
+{% endblock %}
+{% block page_title %}My Dashboard{% endblock %}
+{% block dashboard_content %}
+<div class="stats-grid">
+    {% if loyalty %}
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-info">
+            <h3>{{ loyalty.total_points }}</h3>
+            <p>Loyalty Points ({{ loyalty.membership_level|title }})</p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+        <div class="stat-info">
+            <h3>{{ recent_orders|length }}</h3>
+            <p>Recent Orders</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar"></i></div>
+        <div class="stat-info">
+            <h3>{{ upcoming_bookings|length }}</h3>
+            <p>Upcoming Bookings</p>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="card">
+        <div class="card-header"><h3>Recent Orders</h3></div>
+        <div class="card-body">
+            {% for order in recent_orders %}
+            <div class="list-item">
+                <div>
+                    <strong>{{ order.order_number }}</strong>
+                    <span class="badge badge-{{ order.status }}">{{ order.status }}</span>
+                </div>
+                <div>₹{{ "%.2f"|format(order.total_amount) }}</div>
+                <a href="{{ url_for('customer.order_tracking', order_id=order.id) }}" class="btn btn-sm">Track</a>
+            </div>
+            {% else %}
+            <p>No orders yet. <a href="{{ url_for('main.index') }}">Browse restaurants</a></p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header"><h3>Upcoming Bookings</h3></div>
+        <div class="card-body">
+            {% for booking in upcoming_bookings %}
+            <div class="list-item">
+                <div>{{ booking.booking_date }} at {{ booking.booking_time }}</div>
+                <span class="badge">{{ booking.status }}</span>
+            </div>
+            {% else %}
+            <p>No upcoming bookings.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

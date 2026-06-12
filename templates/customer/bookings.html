@@ -1,0 +1,29 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('customer.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+<a href="{{ url_for('customer.bookings') }}" class="active"><i class="fas fa-calendar"></i> Bookings</a>
+{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+{% block dashboard_content %}
+<form method="POST" class="card" style="padding:20px;margin-bottom:24px">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="form-row">
+<select name="branch_id" class="form-control" required>{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select>
+<input type="date" name="booking_date" class="form-control" required>
+<input type="time" name="booking_time" class="form-control" required>
+<input type="number" name="guests" min="1" max="20" class="form-control" placeholder="Guests" required>
+<button class="btn btn-primary">Book Table</button>
+</div>
+</form>
+{% for booking in bookings %}
+<div class="list-item">
+<span>{{ booking.booking_date }} {{ booking.booking_time }} - {{ booking.status }}</span>
+{% if booking.status in ['pending','confirmed'] %}
+<form method="POST" action="{{ url_for('customer.cancel_booking', booking_id=booking.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="btn btn-sm btn-danger">Cancel</button>
+</form>
+{% endif %}
+</div>
+{% endfor %}
+{% endblock %}

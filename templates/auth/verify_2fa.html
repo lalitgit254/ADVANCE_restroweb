@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Two-Factor Authentication{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Two-Factor Authentication</h2>
+        <p>Enter the 6-digit code from your authenticator app</p>
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <input type="text" name="token" required class="form-control" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Verify</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

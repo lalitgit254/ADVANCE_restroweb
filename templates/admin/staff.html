@@ -1,0 +1,8 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Staff Management{% endblock %}
+{% block dashboard_content %}
+{% for s in staff_list %}
+<div class="list-item"><span>{{ s.user.full_name }} - {{ s.designation }}</span><span>{{ s.employee_id }}</span></div>
+{% endfor %}
+{% endblock %}

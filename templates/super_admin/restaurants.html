@@ -1,0 +1,11 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('super_admin.dashboard') }}"><i class="fas fa-globe"></i> Dashboard</a>
+<a href="{{ url_for('super_admin.restaurants') }}" class="active"><i class="fas fa-store"></i> Restaurants</a>
+<a href="{{ url_for('super_admin.create_admin') }}"><i class="fas fa-user-plus"></i> Create Admin</a>
+{% endblock %}
+{% block page_title %}Restaurants{% endblock %}
+{% block header_actions %}<a href="{{ url_for('super_admin.add_restaurant') }}" class="btn btn-primary btn-sm">Add Restaurant</a>{% endblock %}
+{% block dashboard_content %}
+{% for r in restaurants %}<div class="list-item"><span>{{ r.name }}</span><span>{{ r.city }}</span></div>{% endfor %}
+{% endblock %}

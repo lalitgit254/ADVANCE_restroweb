@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<div class="container section">
+    <h1>Your Cart</h1>
+    {% if cart and cart.items.count() > 0 %}
+    <div class="cart-layout">
+        <div class="cart-items">
+            {% for item in cart.items %}
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <h3>{{ item.food_item.name }}</h3>
+                    {% if item.variant %}<p>Size: {{ item.variant.name }}</p>{% endif %}
+                    <p>₹{{ "%.2f"|format(item.unit_price) }} x {{ item.quantity }}</p>
+                </div>
+                <div class="cart-item-total">₹{{ "%.2f"|format(item.subtotal) }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cart-summary card">
+            <h3>Order Summary</h3>
+            <div class="summary-row"><span>Subtotal</span><span>₹{{ "%.2f"|format(cart.total) }}</span></div>
+            <div class="summary-row total"><span>Total</span><span>₹{{ "%.2f"|format(cart.total) }}</span></div>
+            <a href="{{ url_for('customer.checkout') }}" class="btn btn-primary btn-block">Proceed to Checkout</a>
+        </div>
+    </div>
+    {% else %}
+    <p>Your cart is empty. <a href="{{ url_for('main.index') }}">Browse menu</a></p>
+    {% endif %}
+</div>
+{% endblock %}

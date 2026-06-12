@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+{% block content %}
+<div class="container section">
+    <div class="menu-header">
+        <h1>Menu</h1>
+        <div class="menu-filters">
+            <form method="GET" class="filter-form">
+                <input type="text" name="search" value="{{ request.args.get('search','') }}" placeholder="Search..." class="form-control">
+                <select name="filter" class="form-control">
+                    <option value="">All</option>
+                    <option value="veg" {{ 'selected' if request.args.get('filter')=='veg' }}>Veg</option>
+                    <option value="non_veg" {{ 'selected' if request.args.get('filter')=='non_veg' }}>Non-Veg</option>
+                    <option value="special" {{ 'selected' if request.args.get('filter')=='special' }}>Today's Special</option>
+                    <option value="bestseller" {{ 'selected' if request.args.get('filter')=='bestseller' }}>Bestseller</option>
+                </select>
+                <select name="sort" class="form-control">
+                    <option value="name">Name</option>
+                    <option value="price_low" {{ 'selected' if request.args.get('sort')=='price_low' }}>Price: Low</option>
+                    <option value="price_high" {{ 'selected' if request.args.get('sort')=='price_high' }}>Price: High</option>
+                    <option value="rating" {{ 'selected' if request.args.get('sort')=='rating' }}>Rating</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="category-tabs">
+        {% for cat in categories %}
+        <button class="category-tab" data-category="{{ cat.id }}">{{ cat.name }}</button>
+        {% endfor %}
+    </div>
+
+    <div class="food-grid">
+        {% for food in foods %}
+        <div class="food-card" data-category="{{ food.category_id }}">
+            <div class="food-img" style="background-image: url('{{ food.image_url or '/static/images/food-placeholder.jpg' }}')">
+                {% if food.is_veg %}<span class="veg-badge">Veg</span>{% else %}<span class="nonveg-badge">Non-Veg</span>{% endif %}
+                {% if food.is_bestseller %}<span class="bestseller-badge">Bestseller</span>{% endif %}
+                {% if food.is_special %}<span class="special-badge">Special</span>{% endif %}
+            </div>
+            <div class="food-info">
+                <h3>{{ food.name }}</h3>
+                <p class="food-desc">{{ food.description[:80] }}...</p>
+                <div class="food-meta">
+                    <span class="price">₹{{ "%.2f"|format(food.discounted_price) }}</span>
+                    <span class="prep-time"><i class="fas fa-clock"></i> {{ food.preparation_time }}min</span>
+                    {% if food.avg_rating %}<span class="rating"><i class="fas fa-star"></i> {{ food.avg_rating }}</span>{% endif %}
+                </div>
+                <form action="{{ url_for('customer.add_to_cart') }}" method="POST" class="add-cart-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="food_item_id" value="{{ food.id }}">
+                    <input type="hidden" name="restaurant_id" value="{{ food.restaurant_id }}">
+                    <button type="submit" class="btn btn-primary btn-sm btn-block">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

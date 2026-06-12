@@ -1,0 +1,14 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+{% block extra_js %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+{% block dashboard_content %}
+<div class="grid-2">
+<div class="card"><div class="card-header"><h3>Revenue</h3></div><div class="card-body"><canvas id="revenueChart"></canvas></div></div>
+<div class="card"><div class="card-header"><h3>Popular Foods</h3></div><div class="card-body"><canvas id="foodChart"></canvas></div></div>
+</div>
+<script>
+new Chart(document.getElementById('revenueChart'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Revenue',data:[12000,15000,18000,14000,22000,28000,25000],borderColor:'#e94560'}]}});
+new Chart(document.getElementById('foodChart'),{type:'bar',data:{labels:['Butter Chicken','Paneer Tikka','Pizza'],datasets:[{label:'Orders',data:[45,38,32],backgroundColor:'#0f3460'}]}});
+</script>
+{% endblock %}

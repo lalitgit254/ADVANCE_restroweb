@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ restaurant.name }} - Table {{ table.table_number }}{% endblock %}
+{% block content %}
+<div class="container section">
+<h1>{{ restaurant.name }} - Table {{ table.table_number }}</h1>
+<p>Scan-free ordering from your table</p>
+{% if current_user.is_authenticated %}
+<a href="{{ url_for('customer.menu', restaurant_id=restaurant.id) }}" class="btn btn-primary btn-lg">Browse Menu</a>
+<button onclick="callWaiter()" class="btn btn-warning">Call Waiter</button>
+{% else %}
+<a href="{{ url_for('auth.login') }}?next={{ request.path }}" class="btn btn-primary">Login to Order</a>
+{% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function callWaiter() {
+    fetch('{{ url_for("customer.call_waiter") }}', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({table_id:{{ table.id }}, branch_id:{{ table.branch_id }}, table_number:'{{ table.table_number }}'})});
+    alert('Waiter has been notified!');
+}
+</script>
+{% endblock %}

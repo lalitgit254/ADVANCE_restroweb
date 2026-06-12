@@ -1,0 +1,18 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Tables{% endblock %}
+{% block dashboard_content %}
+<form method="POST" action="{{ url_for('admin.add_table') }}" class="card" style="padding:20px;margin-bottom:20px">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="form-row">
+<select name="branch_id" class="form-control">{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select>
+<input name="table_number" placeholder="Table #" class="form-control" required>
+<input name="capacity" type="number" placeholder="Capacity" class="form-control" required>
+<select name="table_type" class="form-control"><option value="2_seater">2 Seater</option><option value="4_seater">4 Seater</option><option value="6_seater">6 Seater</option><option value="8_seater">8 Seater</option></select>
+<button class="btn btn-primary">Add Table</button>
+</div>
+</form>
+{% for table in tables %}
+<div class="list-item"><span>Table {{ table.table_number }} ({{ table.capacity }} seats) - {{ table.status }}</span><span>QR: {{ table.qr_code[:12] }}...</span></div>
+{% endfor %}
+{% endblock %}

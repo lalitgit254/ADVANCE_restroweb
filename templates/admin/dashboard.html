@@ -1,0 +1,26 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('admin.dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+<a href="{{ url_for('admin.foods') }}"><i class="fas fa-hamburger"></i> Foods</a>
+<a href="{{ url_for('admin.orders') }}"><i class="fas fa-receipt"></i> Orders</a>
+<a href="{{ url_for('admin.bookings') }}"><i class="fas fa-calendar"></i> Bookings</a>
+<a href="{{ url_for('admin.tables') }}"><i class="fas fa-chair"></i> Tables</a>
+<a href="{{ url_for('admin.staff') }}"><i class="fas fa-users"></i> Staff</a>
+<a href="{{ url_for('admin.inventory') }}"><i class="fas fa-boxes"></i> Inventory</a>
+<a href="{{ url_for('admin.payments') }}"><i class="fas fa-credit-card"></i> Payments</a>
+<a href="{{ url_for('admin.reviews') }}"><i class="fas fa-star"></i> Reviews</a>
+<a href="{{ url_for('admin.analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a>
+{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+{% block dashboard_content %}
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon revenue"><i class="fas fa-rupee-sign"></i></div><div class="stat-info"><h3>₹{{ "%.0f"|format(total_revenue) }}</h3><p>Total Revenue</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-sun"></i></div><div class="stat-info"><h3>₹{{ "%.0f"|format(daily_sales) }}</h3><p>Today's Sales</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-week"></i></div><div class="stat-info"><h3>₹{{ "%.0f"|format(weekly_sales) }}</h3><p>Weekly Sales</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar"></i></div><div class="stat-info"><h3>₹{{ "%.0f"|format(monthly_sales) }}</h3><p>Monthly Sales</p></div></div>
+    <div class="stat-card"><div class="stat-icon warning"><i class="fas fa-clock"></i></div><div class="stat-info"><h3>{{ active_orders }}</h3><p>Active Orders</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-info"><h3>{{ active_bookings }}</h3><p>Active Bookings</p></div></div>
+    <div class="stat-card"><div class="stat-icon danger"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-info"><h3>{{ low_stock }}</h3><p>Low Stock Alerts</p></div></div>
+    <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3>{{ total_customers }}</h3><p>Customers</p></div></div>
+</div>
+{% endblock %}

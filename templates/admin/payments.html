@@ -1,0 +1,8 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}{% include "admin/_sidebar.html" %}{% endblock %}
+{% block page_title %}Payments{% endblock %}
+{% block dashboard_content %}
+{% for p in payments.items %}
+<div class="list-item"><span>{{ p.invoice_number }} - {{ p.payment_method }}</span><span>₹{{ p.amount }} - {{ p.status }}</span></div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('super_admin.dashboard') }}" class="active"><i class="fas fa-globe"></i> Dashboard</a>
+<a href="{{ url_for('super_admin.restaurants') }}"><i class="fas fa-store"></i> Restaurants</a>
+<a href="{{ url_for('super_admin.create_admin') }}"><i class="fas fa-user-plus"></i> Create Admin</a>
+{% endblock %}
+{% block page_title %}Super Admin Dashboard{% endblock %}
+{% block dashboard_content %}
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-info"><h3>{{ total_restaurants }}</h3><p>Restaurants</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>{{ total_users }}</h3><p>Users</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>₹{{ "%.0f"|format(total_revenue) }}</h3><p>Platform Revenue</p></div></div>
+<div class="stat-card"><div class="stat-info"><h3>{{ active_orders }}</h3><p>Active Orders</p></div></div>
+</div>
+{% endblock %}

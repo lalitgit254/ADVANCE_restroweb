@@ -1,0 +1,16 @@
+{% extends "layouts/dashboard.html" %}
+{% block sidebar %}
+<a href="{{ url_for('customer.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+<a href="{{ url_for('customer.orders') }}" class="active"><i class="fas fa-receipt"></i> Orders</a>
+<a href="{{ url_for('customer.bookings') }}"><i class="fas fa-calendar"></i> Bookings</a>
+{% endblock %}
+{% block page_title %}My Orders{% endblock %}
+{% block dashboard_content %}
+{% for order in orders.items %}
+<div class="list-item">
+<span>#{{ order.order_number }} - {{ order.status }}</span>
+<span>₹{{ order.total_amount }}</span>
+<a href="{{ url_for('customer.order_tracking', order_id=order.id) }}" class="btn btn-sm">Track</a>
+</div>
+{% endfor %}
+{% endblock %}
